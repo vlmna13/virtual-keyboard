@@ -1,0 +1,15 @@
+{
+  "env": {
+      "browser": true,
+      "es6": true,
+      "node": true 
+  },
+  "extends": ["eslint-config-airbnb-base"],
+  "rules": {
+      "no-plusplus": "off",
+      "eol-last": "off",
+      "no-tabs": "off",
+      "no-trailing-spaces": "off",
+      "indent": ["error", "tab"]
+  }
+}
