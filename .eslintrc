@@ -6,10 +6,6 @@
   },
   "extends": ["eslint-config-airbnb-base"],
   "rules": {
-      "no-plusplus": "off",
-      "eol-last": "off",
-      "no-tabs": "off",
-      "no-trailing-spaces": "off",
-      "indent": ["error", "tab"]
+      "import/extensions": [0, { "<js>": "always" }]
   }
 }
