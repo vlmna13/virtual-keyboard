@@ -40,6 +40,7 @@ const keyboardGeneration = () => {
   for (let i = 0; i < keyboardData.length; i += 1) {
     const key = document.createElement('div');
     key.classList.add('key');
+    key.dataset.index = keyboardData[i].code;
     if (language === 'en') {
       key.innerText = keyboardData[i].ru;
     } else {
@@ -52,7 +53,7 @@ const keyboardGeneration = () => {
       key.classList.add('enter');
     }
     if (keyboardData[i].code === 'Backspace') {
-      key.classList.add('bcks');
+      key.classList.add('backspace');
     }
     if (keyboardData[i].code === 'CapsLock') {
       key.classList.add('caps');
@@ -70,4 +71,14 @@ const keyboardGeneration = () => {
   }
 };
 keyboardGeneration();
-console.log(keyboardData.length);
+// function connecting physical and virtual buttons
+
+window.addEventListener('keydown', (event) => {
+  const button = document.querySelector(`[data-index=${event.code}]`);
+  button.classList.add('active');
+});
+
+window.addEventListener('keyup', (event) => {
+  const button = document.querySelector(`[data-index=${event.code}]`);
+  button.classList.remove('active');
+});

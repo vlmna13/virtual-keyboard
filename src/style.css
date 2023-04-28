@@ -39,18 +39,12 @@
   grid-template-columns: repeat(15, 40px);
   grid-template-rows: repeat(5, 40px);
   gap: 5px;
-  /* grid-template-areas: 
-  'btn btn btn btn btn btn btn btn btn btn btn btn btn backsp backsp'
-  'tab tab btn btn btn btn btn btn btn btn btn btn btn btn enter'
-  'caps caps btn btn btn btn btn btn btn btn btn btn btn btn enter'
-  'shift shift btn btn btn btn btn btn btn btn btn btn btn shift shift'
-  'btn btn btn space space space space space space space btn btn btn btn btn'; */
   grid-template-areas:
-  ".... .... .... .... .... .... .... .... .... .... .... .... .... bcks bcks"
+  ".... .... .... .... .... .... .... .... .... .... .... .... .... back back"
   "tab tab .... .... .... .... .... .... .... .... .... .... .... .... entr"
   "caps caps .... .... .... .... .... .... .... .... .... .... .... .... entr"
   "shtl shtl .... .... .... .... .... .... .... .... .... .... .... .... ...."
-  ".... .... .... spac spac spac spac spac spac spac .... .... .... .... ....";
+  ".... .... .... space space space space space space space .... .... .... .... ....";
 }
 
 .key {
@@ -61,11 +55,16 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    transition: 0.5s;
 }
 
-.bcks {
+.key.active {
+    background-color: red;
+}
+
+.backspace {
     background-color: #222222;
-    grid-area: bcks;
+    grid-area: back;
 }
 
 .tab {
@@ -83,21 +82,18 @@
     grid-area: caps;
 }
 
-.shift-left{
+.shift-left {
     background-color: #222222;
     grid-area: shtl;
 }
 
-.shift-right {
-    background-color: #222222;
-}
-
+.shift-right,
 .key-chars {
     background-color: #222222;
 }
 
 .space {
     background-color: #222222;
-    grid-area: spac;
+    grid-area: space;
 }
 

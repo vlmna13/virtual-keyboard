@@ -90,61 +90,61 @@ const keyboardData = [
   },
 
   {
-    code: 'keyQ',
+    code: 'KeyQ',
     ru: 'й',
     en: 'q',
   },
 
   {
-    code: 'keyW',
+    code: 'KeyW',
     ru: 'ц',
     en: 'w',
   },
 
   {
-    code: 'keyE',
+    code: 'KeyE',
     ru: 'у',
     en: 'e',
   },
 
   {
-    code: 'keyR',
+    code: 'KeyR',
     ru: 'к',
     en: 'r',
   },
 
   {
-    code: 'keyT',
+    code: 'KeyT',
     ru: 'е',
     en: 't',
   },
 
   {
-    code: 'keyY',
+    code: 'KeyY',
     ru: 'н',
     en: 'y',
   },
 
   {
-    code: 'keyU',
+    code: 'KeyU',
     ru: 'г',
     en: 'u',
   },
 
   {
-    code: 'keyI',
+    code: 'KeyI',
     ru: 'ш',
     en: 'i',
   },
 
   {
-    code: 'keyO',
+    code: 'KeyO',
     ru: 'щ',
     en: 'o',
   },
 
   {
-    code: 'keyP',
+    code: 'KeyP',
     ru: 'з',
     en: 'p',
   },
