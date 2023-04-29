@@ -23,7 +23,7 @@ wrapper.appendChild(instruction);
 
 /* localstorage */
 
-let language = 'ru';
+let language = 'en';
 function setLocalStorage() {
   localStorage.setItem('lang', language);
 }
@@ -42,9 +42,11 @@ const keyboardGeneration = () => {
     key.classList.add('key');
     key.dataset.index = keyboardData[i].code;
     if (language === 'en') {
-      key.innerText = keyboardData[i].ru;
+      key.innerText = keyboardData[i].inside.en;
+      key.dataset.type = keyboardData[i].type.en;
     } else {
-      key.innerText = keyboardData[i].en;
+      key.innerText = keyboardData[i].inside.ru;
+      key.dataset.type = keyboardData[i].type.ru;
     }
     if (keyboardData[i].code === 'Tab') {
       key.classList.add('tab');
@@ -76,9 +78,67 @@ keyboardGeneration();
 window.addEventListener('keydown', (event) => {
   const button = document.querySelector(`[data-index=${event.code}]`);
   button.classList.add('active');
+  if (event.code === 'CapsLock') {
+    button.classList.toggle('active');
+  }
 });
-
 window.addEventListener('keyup', (event) => {
   const button = document.querySelector(`[data-index=${event.code}]`);
   button.classList.remove('active');
+  // if (event.code === 'CapsLock') {
+  //   button.classList.toggle('active');
+  // }
 });
+
+// function inputing text
+const enterVirtualText = (array) => {
+  array.forEach((element) => {
+    element.addEventListener('mousedown', () => {
+      element.classList.add('active');
+      textarea.value += element.innerHTML;
+    });
+    element.addEventListener('mouseup', () => {
+      element.classList.remove('active');
+    });
+  });
+};
+const digitsCollection = document.querySelectorAll('[data-type=digit]');
+const lettersCollection = document.querySelectorAll('[data-type=letter]');
+const symbolsCollection = document.querySelectorAll('[data-type=symbol]');
+enterVirtualText(digitsCollection);
+enterVirtualText(lettersCollection);
+enterVirtualText(symbolsCollection);
+const space = document.querySelector('.space');
+space.addEventListener('mousedown', () => {
+  space.classList.add('active');
+  textarea.value += space.innerText;
+});
+space.addEventListener('mouseup', () => {
+  space.classList.remove('active');
+});
+const enter = document.querySelector('.enter');
+enter.addEventListener('mousedown', () => {
+  enter.classList.add('active');
+  textarea.value += '\n';
+});
+enter.addEventListener('mouseup', () => {
+  enter.classList.remove('active');
+});
+
+const backspace = document.querySelector('.backspace');
+backspace.addEventListener('mousedown', () => {
+  backspace.classList.add('active');
+  textarea.value = textarea.value.substring(0, textarea.value.length - 1);
+  // hunt down cursor
+});
+backspace.addEventListener('mouseup', () => {
+  backspace.classList.remove('active');
+});
+
+textarea.onblur = () => textarea.focus();
+textarea.focus();
+
+const capslock = document.querySelector('.caps');
+const shiftLeft = document.querySelector('.shift-left');
+const shidtRight = document.querySelector('.shift-right');
+
