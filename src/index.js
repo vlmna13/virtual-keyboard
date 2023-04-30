@@ -23,7 +23,7 @@ wrapper.appendChild(instruction);
 
 /* localstorage */
 
-let language = 'en';
+const language = 'en';
 function setLocalStorage() {
   localStorage.setItem('lang', language);
 }
@@ -108,6 +108,7 @@ const symbolsCollection = document.querySelectorAll('[data-type=symbol]');
 enterVirtualText(digitsCollection);
 enterVirtualText(lettersCollection);
 enterVirtualText(symbolsCollection);
+// Space button
 const space = document.querySelector('.space');
 space.addEventListener('mousedown', () => {
   space.classList.add('active');
@@ -116,6 +117,7 @@ space.addEventListener('mousedown', () => {
 space.addEventListener('mouseup', () => {
   space.classList.remove('active');
 });
+// Enter button
 const enter = document.querySelector('.enter');
 enter.addEventListener('mousedown', () => {
   enter.classList.add('active');
@@ -124,7 +126,7 @@ enter.addEventListener('mousedown', () => {
 enter.addEventListener('mouseup', () => {
   enter.classList.remove('active');
 });
-
+// backspace button
 const backspace = document.querySelector('.backspace');
 backspace.addEventListener('mousedown', () => {
   backspace.classList.add('active');
@@ -138,25 +140,40 @@ backspace.addEventListener('mouseup', () => {
 textarea.onblur = () => textarea.focus();
 textarea.focus();
 
-const capslock = document.querySelector('.caps');
 const shiftLeft = document.querySelector('.shift-left');
 const shiftRight = document.querySelector('.shift-right');
 
+// capslock button
+const capslock = document.querySelector('.caps');
 window.addEventListener('keydown', (event) => {
-  event.getModifierState('CapsLock');
-  lettersCollection.forEach((letter) => {
-    letter.innerText = letter.innerText.toUpperCase();
-  });
+  const target = event.getModifierState('CapsLock');
+  if (target) {
+    lettersCollection.forEach((letter) => {
+      letter.innerText = letter.innerText.toUpperCase();
+    });
+    capslock.classList.toggle('active');
+  }
 });
 
 window.addEventListener('keyup', (event) => {
-  event.getModifierState('CapsLock');
-  lettersCollection.forEach((letter) => {
-    letter.innerText = letter.innerText.toLowerCase();
-  });
+  const target = event.getModifierState('CapsLock');
+  if (!target) {
+    lettersCollection.forEach((letter) => {
+      letter.innerText = letter.innerText.toLowerCase();
+    });
+    capslock.classList.toggle('active');
+  }
 });
 
 capslock.addEventListener('click', () => {
   capslock.classList.toggle('active');
-  console.log('1');
+  if (capslock.classList.contains('active')) {
+    lettersCollection.forEach((letter) => {
+      letter.innerText = letter.innerText.toUpperCase();
+    });
+  } else {
+    lettersCollection.forEach((letter) => {
+      letter.innerText = letter.innerText.toLowerCase();
+    });
+  }
 });
