@@ -95,7 +95,7 @@ const enterVirtualText = (array) => {
   array.forEach((element) => {
     element.addEventListener('mousedown', () => {
       element.classList.add('active');
-      textarea.value += element.innerHTML;
+      textarea.value += element.innerText;
     });
     element.addEventListener('mouseup', () => {
       element.classList.remove('active');
@@ -140,5 +140,23 @@ textarea.focus();
 
 const capslock = document.querySelector('.caps');
 const shiftLeft = document.querySelector('.shift-left');
-const shidtRight = document.querySelector('.shift-right');
+const shiftRight = document.querySelector('.shift-right');
 
+window.addEventListener('keydown', (event) => {
+  event.getModifierState('CapsLock');
+  lettersCollection.forEach((letter) => {
+    letter.innerText = letter.innerText.toUpperCase();
+  });
+});
+
+window.addEventListener('keyup', (event) => {
+  event.getModifierState('CapsLock');
+  lettersCollection.forEach((letter) => {
+    letter.innerText = letter.innerText.toLowerCase();
+  });
+});
+
+capslock.addEventListener('click', () => {
+  capslock.classList.toggle('active');
+  console.log('1');
+});
