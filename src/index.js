@@ -23,31 +23,28 @@ wrapper.appendChild(instruction);
 
 /* localstorage */
 
-const language = 'en';
+let language = 'en';
 function setLocalStorage() {
   localStorage.setItem('lang', language);
 }
 window.addEventListener('beforeunload', setLocalStorage);
 
-// function getLocalStorage() {
-//   if (localStorage.getItem('lang')) {
-//     let language = localStorage.getItem('lang');
-//     getTranslate(language);
-//   }
-// }
-// window.addEventListener('load', getLocalStorage);
+function getLocalStorage() {
+  if (localStorage.getItem('lang')) {
+    language = localStorage.getItem('lang');
+  }
+}
+window.addEventListener('load', getLocalStorage);
+
 const keyboardGeneration = () => {
   for (let i = 0; i < keyboardData.length; i += 1) {
     const key = document.createElement('div');
     key.classList.add('key');
     key.dataset.index = keyboardData[i].code;
-    if (language === 'en') {
-      key.innerText = keyboardData[i].inside.en;
-      key.dataset.type = keyboardData[i].type.en;
-    } else {
-      key.innerText = keyboardData[i].inside.ru;
-      key.dataset.type = keyboardData[i].type.ru;
-    }
+
+    key.innerText = keyboardData[i].inside[language];
+    key.dataset.type = keyboardData[i].type[language];    
+
     if (keyboardData[i].code === 'Tab') {
       key.classList.add('tab');
     }
@@ -78,16 +75,10 @@ keyboardGeneration();
 window.addEventListener('keydown', (event) => {
   const button = document.querySelector(`[data-index=${event.code}]`);
   button.classList.add('active');
-  if (event.code === 'CapsLock') {
-    button.classList.toggle('active');
-  }
 });
 window.addEventListener('keyup', (event) => {
   const button = document.querySelector(`[data-index=${event.code}]`);
   button.classList.remove('active');
-  // if (event.code === 'CapsLock') {
-  //   button.classList.toggle('active');
-  // }
 });
 
 // function inputing text
@@ -108,6 +99,7 @@ const symbolsCollection = document.querySelectorAll('[data-type=symbol]');
 enterVirtualText(digitsCollection);
 enterVirtualText(lettersCollection);
 enterVirtualText(symbolsCollection);
+
 // Space button
 const space = document.querySelector('.space');
 space.addEventListener('mousedown', () => {
@@ -117,6 +109,7 @@ space.addEventListener('mousedown', () => {
 space.addEventListener('mouseup', () => {
   space.classList.remove('active');
 });
+
 // Enter button
 const enter = document.querySelector('.enter');
 enter.addEventListener('mousedown', () => {
@@ -126,6 +119,7 @@ enter.addEventListener('mousedown', () => {
 enter.addEventListener('mouseup', () => {
   enter.classList.remove('active');
 });
+
 // backspace button
 const backspace = document.querySelector('.backspace');
 backspace.addEventListener('mousedown', () => {
@@ -140,18 +134,16 @@ backspace.addEventListener('mouseup', () => {
 textarea.onblur = () => textarea.focus();
 textarea.focus();
 
-const shiftLeft = document.querySelector('.shift-left');
-const shiftRight = document.querySelector('.shift-right');
-
 // capslock button
 const capslock = document.querySelector('.caps');
 window.addEventListener('keydown', (event) => {
   const target = event.getModifierState('CapsLock');
   if (target) {
     lettersCollection.forEach((letter) => {
-      letter.innerText = letter.innerText.toUpperCase();
+      const letter1 = letter;
+      letter1.innerText = letter.innerText.toUpperCase();
     });
-    capslock.classList.toggle('active');
+    capslock.classList.add('active');
   }
 });
 
@@ -159,9 +151,10 @@ window.addEventListener('keyup', (event) => {
   const target = event.getModifierState('CapsLock');
   if (!target) {
     lettersCollection.forEach((letter) => {
-      letter.innerText = letter.innerText.toLowerCase();
+      const letter1 = letter;
+      letter1.innerText = letter.innerText.toLowerCase();
     });
-    capslock.classList.toggle('active');
+    capslock.classList.remove('active');
   }
 });
 
@@ -169,11 +162,67 @@ capslock.addEventListener('click', () => {
   capslock.classList.toggle('active');
   if (capslock.classList.contains('active')) {
     lettersCollection.forEach((letter) => {
-      letter.innerText = letter.innerText.toUpperCase();
+      const letter1 = letter;
+      letter1.innerText = letter.innerText.toUpperCase();
     });
   } else {
     lettersCollection.forEach((letter) => {
-      letter.innerText = letter.innerText.toLowerCase();
+      const letter1 = letter;
+      letter1.innerText = letter.innerText.toLowerCase();
     });
   }
 });
+
+// tab working only with mouth
+const tab = document.querySelector('.tab');
+tab.addEventListener('click', () => {
+  if (tab.classList.contains('active')) {
+    textarea.value += '\u00A0';
+    tab.classList.remove('active');
+  }
+  tab.classList.add('active');
+  textarea.value += '\u00A0';
+});
+
+const shiftLeft = document.querySelector('.shift-left');
+const shiftRight = document.querySelector('.shift-right');
+
+// language change
+
+function changeLanguage(func, ...codes) {
+  const pressed = new Set();
+  document.addEventListener('keydown', (event) => {
+    pressed.add(event.code);
+    // eslint-disable-next-line no-restricted-syntax
+    for (const code of codes) {
+      if (!pressed.has(code)) {
+        return;
+      }
+    }
+    pressed.clear();
+    func();
+  });
+  document.addEventListener('keyup', (event) => {
+    pressed.delete(event.code);
+  });
+}
+
+const changeInnerText = () => {
+  if (language === 'ru') {
+    language = 'en';
+  } else {
+    language = 'ru';
+  }
+
+  keyboardData.forEach((key) => {
+    const node = document.querySelector(`[data-index=${key.code}]`);
+    node.innerText = key.inside[language];
+    node.dataset.type = key.type[language];
+  });
+};
+
+changeLanguage(
+  changeInnerText,
+  'MetaLeft',
+  'AltLeft',
+);
